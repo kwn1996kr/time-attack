@@ -15,18 +15,38 @@ def index():
 
 @app.route('/detail/<idx>')
 def detail(idx):
-    // todo
+    post = db.test.find_one({'idx': int(idx)}, {'_id': False})
+    return render_template("detail.html", post=post)
 
 @app.route('/post', methods=['POST'])
 def save_post():
-    // todo
+    title_receive = request.form["title_give"]
+    pw_receive = request.form["pw_give"]
+    content_receive = request.form["content_give"]
+    post_count = db.test.estimated_document_count({}) #db의 도큐먼트의 수를 세어준다.
+
+    if post_count == 0:
+        max_value = 1
+    else:
+        max_value = max_value = db.test.find_one(sort=[("idx", -1)])['idx'] + 1
+
+    doc = {
+        'idx': max_value,
+        'title': title_receive,
+        'content': content_receive,
+        'pw': pw_receive,
+        'reg_date': datetime.now()
+    }
+
+    db.test.insert_one(doc)
     return {"result": "success"}
 
 
 @app.route('/post', methods=['GET'])
 def get_post():
-    posts = 0
-		// todo
+    posts = list(db.test.find({}, {'_id': False}).sort([("reg_date", -1)]))
+    for a in posts:
+        a['reg_date'] = a['reg_date'].strftime('%Y.%m.%d %H:%M:%S')
     return jsonify({"posts": posts})
 
 

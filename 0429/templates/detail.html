@@ -53,7 +53,18 @@
         }
 
         function deleteArticle() {
-            // todo
+            $.ajax({
+                type: "DELETE",
+                url: `/post?idx={{ post.idx }}`,
+                success: function (response) { // 성공하면
+                    if (response["result"] == "success") {
+                       alert("삭제 성공!");
+                       window.location.href='/'
+                    } else {
+                        alert("서버 오류!");
+                    }
+                }
+            })
         }
     </script>
 
