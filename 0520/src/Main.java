@@ -81,7 +81,7 @@ class PlayerATeam extends Player
             int a = answer.indexOf(number.charAt(i));
 
             char temp = number.charAt(i);
-            if(Character.isDigit(temp)){
+            if(!Character.isDigit(temp)){
                 throw new Exception("Invalid input(Only Numeric). The opporntunity passes to the nexy team");
             }
 
@@ -138,7 +138,7 @@ class PlayerBTeam extends Player
             int a = answer.indexOf(number.charAt(i));
 
             char temp = number.charAt(i);
-            if(Character.isDigit(temp)){
+            if(!Character.isDigit(temp)){
                 throw new Exception("Invalid input(Only Numeric). The opporntunity passes to the nexy team");
             }
 
