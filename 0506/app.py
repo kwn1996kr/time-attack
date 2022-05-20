@@ -21,11 +21,11 @@ def detail(idx):
 @app.route('/articleList', methods=['GET'])
 def get_article_list():
     order_receive = request.args.get("order")
-    article_list = article_list = list(db.test.find({}, {'_id': False}).sort([("reg_date", -1)]))
-    if(order_receive=="asc"):
-        article_list = list(db.test.find({}, {'_id': False}).sort([("read_count", -1)]))
-    elif(order_receive=="desc") :
-        article_list = list(db.test.find({}, {'_id': False}).sort([("read_count", 1)]))
+
+    if(order_receive=="desc"):
+        article_list = list(db.article.find({}, {'_id': False}).sort([("read_count", -1)]))
+    else:
+        article_list = list(db.article.find({}, {'_id': False}).sort([("reg_date", -1)]))
 
     for article in article_list:
         article['reg_date'] = article['reg_date'].strftime('%Y.%m.%d %H:%M:%S')
@@ -43,7 +43,7 @@ def create_article():
     if article_count == 0:
         max_value = 1
     else:
-        max_value = max_value = db.test.find_one(sort=[("idx", -1)])['idx'] + 1
+        max_value = max_value = db.article.find_one(sort=[("idx", -1)])['idx'] + 1
 
     doc = {
         'idx': max_value,
@@ -54,12 +54,14 @@ def create_article():
         'reg_date': datetime.now()
     }
 
-    db.test.insert_one(doc)
+    db.article.insert_one(doc)
     return {"result": "success"}
 
 # Read
 @app.route('/article', methods=['GET'])
 def read_article():
+    idx = request.args['idx']
+    db.article.update_one({'idx': int(idx)}, {'$inc': {'read_count': 1}})
     articles = list(db.test.find({}, {'_id': False}).sort([("reg_date", -1)]))
     for a in articles:
         a['reg_date'] = a['reg_date'].strftime('%Y.%m.%d %H:%M:%S')
@@ -76,16 +78,17 @@ def read_article():
 # Update
 @app.route('/article', methods=['PUT'])
 def update_article():
-    idx =  request.args.get('idx')
+    idx =  request.form('idx')
     title_receive = request.form('title_give')
     content_receive = request.form('content_give')
-    db.test.update_one({'idx': int(idx)},{'$set':{'title': title_receive}})
+    db.test.update_one({'idx': int(idx)},{'$set':{'title': title_receive,"content":content_receive}})
     return {"result": "success"}
 
 # Delete
 @app.route('/article', methods=['DELETE'])
 def delete_article():
-    # todo
+    idx = request.args.get('idx')
+    db.article.delete_one({'idx': int(idx)})
     return {"result": "success"}
 
 if __name__ == "__main__":
