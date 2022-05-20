@@ -6,8 +6,6 @@ abstract class Player{
     private String name;
     private String initNumber;
     private List<String> fightList = new LinkedList<String>();
-    private List<String> fightListName = new LinkedList<String>();
-    private List<String> fightListResult = new LinkedList<String>();
     private Boolean isEnd;
     public Player(String name, String initNumber) {
         this.name = name;
@@ -16,35 +14,21 @@ abstract class Player{
     }
     public abstract void play(String number) throws Exception;
     public void addFightList(String number) { fightList.add(number); }
-    public void addFightListName(String name) { fightListName.add(name); }
-    public void addFightListResult(String result) { fightListResult.add(result); }
     public Boolean getIsEnd() { return isEnd; }
     public void setIsEnd(Boolean isEnd) { this.isEnd = isEnd; }
     public String getInitNumber() { return initNumber; }
     public String getName() { return name; }
     public void printFightList() {
         int count = 1;
-        if(this.name.equals("A Team")) {
-            System.out.println("A Team");
-            System.out.println("----------------------------------------");
-            for (int i = 0; i < fightListName.size(); i++) {
-                if (fightListName.get(i).equals("A Team")) {
-                    System.out.println(count++ + " : " + fightList.get(i) + " : " + fightListResult.get(i));
-                }
-            }
-            System.out.println("----------------------------------------");
+        System.out.println(name);
+        System.out.println("-------------------------------------");
+        for(String fight : fightList)
+        {
+            System.out.println(count + " : " + fight);
+            count++;
         }
-        else {
-            count = 1;
-            System.out.println("B Team");
-            System.out.println("----------------------------------------");
-            for (int i = 0; i < fightListName.size(); i++) {
-                if (fightListName.get(i).equals("B Team")) {
-                    System.out.println(count++ + " : " + fightList.get(i) + " : " + fightListResult.get(i));
-                }
-            }
-            System.out.println("----------------------------------------");
-        }
+        System.out.println("-------------------------------------");
+
     }
 }
 class PlayerATeam extends Player
@@ -97,12 +81,11 @@ class PlayerATeam extends Player
 
         if(strike == 4) {
             System.out.println("Congratulation!");
-            this.addFightListResult("Congratulation!");
             super.setIsEnd(true);
         } else {
             System.out.println("Strike : "+strike+", Ball :"+ball+", Out: "+out);
-            this.addFightListResult("Strike : "+strike+", Ball :"+ball+", Out: "+out);
         }
+        super.addFightList(number + " : Strike : "+strike+", Ball :"+ball+", Out: "+out);
     }
 }
 
@@ -155,11 +138,10 @@ class PlayerBTeam extends Player
         if(ball == 4) {
             System.out.println("Congratulation!");
             super.setIsEnd(true);
-            this.addFightListResult("Congratulation!");
         } else {
             System.out.println("Strike : "+strike+", Ball :"+ball+", Out: "+out);
-            this.addFightListResult("Strike : "+strike+", Ball :"+ball+", Out: "+out);
         }
+        super.addFightList(number + " : Strike : "+strike+", Ball :"+ball+", Out: "+out);
     }
 }
 
@@ -180,8 +162,6 @@ public class Main {
                     String number = scanner.nextLine();
                     try {
                         player.play(number);
-                        player.addFightList(number);
-                        player.addFightListName(player.getName());
                     } catch (Exception e) {
                         System.out.println(e.getMessage());
                     }
