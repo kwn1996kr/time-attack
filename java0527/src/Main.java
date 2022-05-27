@@ -11,11 +11,15 @@ class Calculator
     {
         int result = 0;
         // todo
+        Set<Integer> set = new HashSet<>();
+
         for(int i=0;i<A.length;i++) {
-            for (int j = 0; j < B.length; j++) {
-                if(A[i]==B[j]){
-                    result+=A[i];
-                }
+            set.add(A[i]);
+        }
+
+        for (int i = 0; i < B.length; i++) {
+            if(set.contains(B[i])){
+                result+=B[i];
             }
         }
 
