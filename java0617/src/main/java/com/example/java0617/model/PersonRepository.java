@@ -1,4 +1,4 @@
-package com.example.java0610.model;
+package com.example.java0617.model;
 
 import com.sun.tools.javac.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;

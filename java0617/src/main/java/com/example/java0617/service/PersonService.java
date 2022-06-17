@@ -1,8 +1,8 @@
-package com.example.java0610.service;
+package com.example.java0617.service;
 
-import com.example.java0610.model.Person;
-import com.example.java0610.model.PersonRepository;
-import com.example.java0610.model.PersonRequestDto;
+import com.example.java0617.model.Person;
+import com.example.java0617.model.PersonRepository;
+import com.example.java0617.model.PersonRequestDto;
 import com.sun.tools.javac.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
